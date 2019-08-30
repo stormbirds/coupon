@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2019-08-29
  */
 @RestController
-@RequestMapping("/api/vi")
+@RequestMapping("/api/v1")
 public class CouponTypeController {
     private final ITypeService typeService;
 

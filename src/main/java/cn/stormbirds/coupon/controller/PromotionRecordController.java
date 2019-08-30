@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Api(value = "优惠券活动记录 前端控制器")
 @RestController
-@RequestMapping("/api/vi")
+@RequestMapping("/api/v1")
 public class PromotionRecordController {
     @Autowired
     private IPromotionRecordService promotionRecordService;
@@ -40,7 +40,19 @@ public class PromotionRecordController {
     @ApiOperation(value = "添加新商家优惠券活动")
     @PostMapping(value = "/coupon-promotion-record")
     public PromotionRecord addPromotionRecord(@RequestBody PromotionRecord record){
-        promotionRecordService.saveOrUpdate(record);
+        record.setId(null);
+        promotionRecordService.save(record);
         return record;
+    }
+
+    @ApiOperation(value = "更新商家优惠券活动")
+    @PutMapping(value = "/coupon-promotion-record")
+    public PromotionRecord updatePromotionRecord(@RequestBody PromotionRecord record){
+        if(promotionRecordService.updateById(record)){
+            return record;
+        }else{
+            return null;
+        }
+
     }
 }

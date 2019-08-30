@@ -1,7 +1,10 @@
 package cn.stormbirds.coupon.service;
 
+import cn.stormbirds.coupon.base.ResultJson;
 import cn.stormbirds.coupon.entity.CouponRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRecordService extends IService<CouponRecord> {
 
+    List<CouponRecord> getRecordsByShopId(Long promotionId);
+
+    ResultJson addRecord(Long promotionId, Long userId, int count);
+
+    boolean usedCoupon(String couponCode,Long shopId, Long userId);
 }
