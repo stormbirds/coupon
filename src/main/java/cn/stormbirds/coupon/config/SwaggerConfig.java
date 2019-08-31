@@ -42,6 +42,6 @@ public class SwaggerConfig {
                 "API V1.0",
                 null,
                 new Contact("stormbirds", "https://blog.stormbirds.cn", "xbaojun@gmail.com"),
-                "Apache", "https://opensource.org/licenses/Apache-2.0", Collections.emptyList());
+                "License Apache", "https://opensource.org/licenses/Apache-2.0", Collections.emptyList());
     }
 }

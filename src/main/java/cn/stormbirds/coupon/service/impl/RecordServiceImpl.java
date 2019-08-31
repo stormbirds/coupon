@@ -49,10 +49,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, CouponRecord> i
             log.error("未找到当前活动 promotionId = {}", promotionId);
             throw new CustomControllerException(ResultJson.failure(ResultCode.NOT_FOUND, "未找到当前活动"));
         }
-        int couponRecordCount = count(
-                Wrappers.<CouponRecord>lambdaQuery()
-                        .eq(CouponRecord::getPromotionId, promotionRecord.getId())
-        );
+        int couponRecordCount = promotionRecord.getIssuedCount();
         if (!promotionRecord.getEnable()) {
             log.info("当前活动已关闭 promotionId = {}", promotionId);
             throw new CustomControllerException(ResultJson.failure(ResultCode.FORBIDDEN, "当前活动已关闭"));
@@ -85,6 +82,8 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, CouponRecord> i
                         .couponCode(UUID.randomUUID().toString().replace("-", "").toUpperCase())
                         .build()).collect(Collectors.toList());
         if (saveBatch(records)) {
+            promotionRecord.setIssuedCount(couponRecordCount+count);
+            promotionRecordService.updateById(promotionRecord);
             return ResultJson.ok(records.stream().map(CouponRecord::getCouponCode).collect(Collectors.toList()));
         }
         return ResultJson.failure(ResultCode.SERVER_ERROR, "保存数据出错，请重试");
@@ -92,8 +91,12 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, CouponRecord> i
 
     @Override
     public boolean usedCoupon(String couponCode, Long shopId, Long userId) {
-        CouponRecord record = getOne(Wrappers.<CouponRecord>lambdaQuery().eq(CouponRecord::getCouponCode,couponCode)) ;
-        PromotionRecord promotionRecord = promotionRecordService.getById(record.getPromotionId());
+        List<CouponRecord>  records = list(Wrappers.<CouponRecord>lambdaQuery().eq(CouponRecord::getCouponCode,couponCode)) ;
+        if(records.size()<=0){
+            log.error("未找到当前活动 couponCode = {}", couponCode);
+            throw new CustomControllerException(ResultJson.failure(ResultCode.NOT_FOUND, "未找到当前活动"));
+        }
+        PromotionRecord promotionRecord = promotionRecordService.getById(records.get(0).getPromotionId());
         if (promotionRecord == null) {
             log.error("未找到当前活动 couponCode = {}", couponCode);
             throw new CustomControllerException(ResultJson.failure(ResultCode.NOT_FOUND, "未找到当前活动"));

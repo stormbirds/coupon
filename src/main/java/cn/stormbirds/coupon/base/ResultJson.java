@@ -1,5 +1,7 @@
 package cn.stormbirds.coupon.base;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
@@ -13,8 +15,11 @@ public class ResultJson<T> implements Serializable {
 
 
     private static final long serialVersionUID = 7488995406331282790L;
+    @ApiModelProperty(value = "状态码")
     private int code;
+    @ApiModelProperty(value = "返回状态信息")
     private String msg;
+    @ApiModelProperty(value = "应答数据")
     private T data;
 
     public static ResultJson<Object> ok() {

@@ -27,16 +27,16 @@ public class PromotionRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "id主键",required = false,example = "0")
+    @ApiModelProperty(value = "id主键，无需填写")
     private Long id;
 
-    @ApiModelProperty(value = "商家ID",example = "0")
+    @ApiModelProperty(value = "商家ID",example = "1167031892952084482")
     private Long shopId;
 
     @ApiModelProperty(value = "活动类型满减、免单、现金券、打折券",example = "0")
     private Integer couponType;
 
-    @ApiModelProperty(value = "优惠券张数",example = "0")
+    @ApiModelProperty(value = "优惠券张数",example = "10")
     private Integer couponCount;
 
     @ApiModelProperty(value = "优惠券活动描述")
@@ -69,5 +69,6 @@ public class PromotionRecord implements Serializable {
     @ApiModelProperty(value = "打折券折扣系数，限1-99之间整数，最终结果除以100",example = "90")
     private Integer discount;
 
-
+    @ApiModelProperty(value = "已发放优惠券数量",example = "90")
+    private Integer issuedCount;
 }

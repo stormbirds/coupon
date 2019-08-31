@@ -10,10 +10,9 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * <p>
@@ -24,6 +23,8 @@ import lombok.experimental.Accessors;
  * @since 2019-08-29
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("coupon_record")
@@ -41,13 +42,13 @@ public class CouponRecord implements Serializable {
     @TableField(value = "promotion_id")
     private Long promotionId;
 
-    @ApiModelProperty(value = "优惠券使用者ID",example = "0")
+    @ApiModelProperty(value = "优惠券使用者ID",example = "10")
     @TableField(value = "user_id")
     private Long userId;
 
     @ApiModelProperty(value = "优惠券领取时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at" ,exist = false)
+    @TableField(value = "created_at",jdbcType = JdbcType.DATETIMEOFFSET)
     private LocalDateTime createdAt;
 
     @ApiModelProperty(value = "优惠券领取者ID",example = "0")
@@ -68,6 +69,6 @@ public class CouponRecord implements Serializable {
     private Boolean used;
 
     @ApiModelProperty(value = "优惠券码，发放给用户使用")
-    @TableField(value = "coupon_code")
+    @TableField(value = "coupon_code",jdbcType = JdbcType.VARCHAR)
     private String couponCode;
 }
